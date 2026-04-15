@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>금융/핀테크 솔루션 | ThinkingBell</title>
+  <meta name="description" content="ThinkingBell 금융/핀테크 특화 마케팅 자동화 솔루션"/>
+  
+<style>
+  :root {
+    --brand-primary: #1A3BC4;
+    --brand-accent:  #00C896;
+    --text-primary:  #0D1117;
+    --text-sub:      #4A5568;
+    --bg-base:       #FFFFFF;
+    --bg-section:    #F7F9FC;
+    --border:        #E2E8F0;
+    --white:         #ffffff;
+    --radius-sm:     8px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --shadow-sm:     0 2px 8px rgba(26,59,196,0.08);
+    --shadow-md:     0 8px 32px rgba(26,59,196,0.12);
+    --shadow-lg:     0 24px 64px rgba(26,59,196,0.16);
+    --transition:    all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary); background: var(--bg-base);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+  /* Layout */
+  .container       { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .container-wide  { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  .section         { padding: 96px 0; }
+  .section-sm      { padding: 64px 0; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-size: 1rem; font-weight: 600; transition: var(--transition);
+    white-space: nowrap; cursor: pointer; border: none; font-family: inherit;
+  }
+  .btn-primary  { background: var(--brand-primary); color: var(--white); box-shadow: 0 4px 16px rgba(26,59,196,0.3); }
+  .btn-primary:hover  { background: #1530a8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,59,196,0.4); }
+  .btn-accent   { background: var(--brand-accent); color: var(--white); box-shadow: 0 4px 16px rgba(0,200,150,0.3); }
+  .btn-accent:hover   { background: #00b085; transform: translateY(-2px); }
+  .btn-outline  { background: transparent; color: var(--brand-primary); border: 2px solid var(--brand-primary); }
+  .btn-outline:hover  { background: var(--brand-primary); color: var(--white); }
+  .btn-ghost    { background: rgba(255,255,255,0.1); color: var(--white); border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+  .btn-ghost:hover    { background: rgba(255,255,255,0.2); }
+  .btn-lg       { padding: 18px 36px; font-size: 1.125rem; border-radius: var(--radius-md); }
+  .btn-sm       { padding: 10px 20px; font-size: 0.875rem; }
+
+  /* Badge */
+  .badge         { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px; font-size: 0.8125rem; font-weight: 600; }
+  .badge-primary { background: rgba(26,59,196,0.1); color: var(--brand-primary); border: 1px solid rgba(26,59,196,0.2); }
+  .badge-accent  { background: rgba(0,200,150,0.1); color: #00a67a; border: 1px solid rgba(0,200,150,0.2); }
+  .badge-white   { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+
+  /* Header */
+  .header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 24px; height: 72px; display: flex; align-items: center;
+    transition: var(--transition);
+  }
+  .header.transparent { background: transparent; }
+  .header.solid {
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header.always-solid {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--brand-primary); }
+  .logo-icon { width: 36px; height: 36px; background: var(--brand-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { display: block; }
+  .gnb { display: flex; align-items: center; gap: 4px; }
+  .gnb-item {
+    position: relative; padding: 8px 16px;
+    font-size: 0.9375rem; font-weight: 500; color: var(--text-primary);
+    border-radius: var(--radius-sm); transition: var(--transition); cursor: pointer;
+  }
+  .gnb-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+  .lang-switch {
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px;
+    border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 600;
+    color: var(--text-sub); border: 1px solid var(--border); cursor: pointer;
+    transition: var(--transition); background: transparent;
+  }
+  .lang-switch:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+  .gnb-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+    padding: 8px; opacity: 0; visibility: hidden;
+    transform: translateY(-8px); transition: var(--transition); z-index: 100;
+  }
+  .gnb-item:hover .gnb-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-item {
+    display: block; padding: 10px 14px; font-size: 0.9rem;
+    color: var(--text-primary); border-radius: var(--radius-sm); transition: var(--transition);
+  }
+  .dropdown-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+
+  /* Mobile menu btn */
+  .mobile-menu-btn {
+    display: none; flex-direction: column; gap: 5px;
+    width: 32px; height: 32px; cursor: pointer; justify-content: center;
+    background: none; border: none;
+  }
+  .mobile-menu-btn span { width: 100%; height: 2px; background: var(--text-primary); border-radius: 2px; transition: var(--transition); display: block; }
+
+  /* Footer */
+  .footer { background: var(--text-primary); color: var(--white); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-top: 16px; line-height: 1.7; }
+  .footer-col h4 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a { color: rgba(255,255,255,0.65); font-size: 0.9rem; transition: var(--transition); }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom p { color: rgba(255,255,255,0.45); font-size: 0.875rem; }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { color: rgba(255,255,255,0.45); font-size: 0.875rem; transition: var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,0.8); }
+  .partner-badge {
+    padding: 6px 16px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+    font-size: 0.8125rem; font-weight: 600; color: rgba(255,255,255,0.65);
+    display: inline-block; margin: 4px;
+  }
+
+  /* Section helpers */
+  .section-header { text-align: center; margin-bottom: 16px; }
+  .section-sub { text-align: center; color: var(--text-sub); font-size: 1.125rem; max-width: 600px; margin: 0 auto 56px; }
+  .text-center { text-align: center; }
+  .gradient-text { background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Cookie Banner */
+  .cookie-banner {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: var(--text-primary); color: white;
+    padding: 16px 24px; border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 16px;
+    max-width: 640px; width: calc(100% - 48px); box-shadow: var(--shadow-lg);
+  }
+  .cookie-banner span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+  .cookie-banner a { color: var(--brand-accent); }
+
+  /* Headings */
+  h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
+  h2 { font-size: clamp(1.5rem,3vw,2.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+  h3 { font-size: clamp(1.1rem,2vw,1.5rem); font-weight: 600; line-height: 1.3; }
+
+  /* Responsive */
+  @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (max-width: 768px) {
+    .gnb, .lang-switch { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section { padding: 64px 0; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .btn-lg { padding: 14px 24px; font-size: 1rem; }
+  }
+</style>
+
+  
+<style>
+  .sol-hero { padding: 140px 0 80px; text-align: center; }
+  .sol-hero h1 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 20px; }
+  .sol-hero p  { color: var(--text-sub); font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px; }
+  .sol-pain { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
+  .sol-pain-item { display: flex; align-items: flex-start; gap: 16px; padding: 24px; background: white; border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .sol-pain-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .sol-pain-item h3 { font-weight: 700; margin-bottom: 6px; }
+  .sol-pain-item p { color: var(--text-sub); font-size: 0.9rem; line-height: 1.6; }
+  .sol-flow { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 48px; }
+  .sol-flow-step { text-align: center; padding: 32px 16px; position: relative; }
+  .sol-flow-step::after { content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); color: var(--brand-accent); font-size: 1.5rem; font-weight: 700; }
+  .sol-flow-step:last-child::after { display: none; }
+  .sol-flow-num { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; margin: 0 auto 12px; }
+  .sol-flow-title { font-weight: 700; font-size: 0.9375rem; margin-bottom: 6px; }
+  .sol-flow-desc  { color: var(--text-sub); font-size: 0.8125rem; line-height: 1.5; }
+  .sol-case { background: linear-gradient(135deg,var(--brand-primary) 0%,#0d3b8a 100%); border-radius: var(--radius-lg); padding: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 48px; }
+  .sol-case h2 { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; }
+  .sol-case p  { color: rgba(255,255,255,0.7); line-height: 1.7; }
+  .sol-case-stat { font-size: 5rem; font-weight: 900; color: var(--brand-accent); line-height: 1; }
+  .sol-case-label { color: rgba(255,255,255,0.6); font-size: 0.9375rem; margin-top: 8px; }
+  @media (max-width: 768px) { .sol-pain, .sol-case { grid-template-columns: 1fr; } .sol-flow { grid-template-columns: 1fr 1fr; } .sol-flow-step::after { display: none; } }
+</style>
+
+</head>
+<body>
+  
+  <header class="header always-solid" >
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" fill="rgba(255,255,255,0.25)"/>
+            <circle cx="10" cy="10" r="3" fill="white"/>
+            <path d="M10 3v14M3 10h14" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        ThinkingBell
+      </a>
+      <nav class="gnb">
+        <div class="gnb-item">
+          제품
+          <div class="gnb-dropdown">
+            <a href="product-overview.html" class="dropdown-item">제품 개요</a>
+            <a href="product-analytics.html" class="dropdown-item">ThinkingData Analytics</a>
+            <a href="product-campaign.html" class="dropdown-item">ThinkingData Campaign</a>
+            <a href="product-tokbell.html" class="dropdown-item">TokBell 메시징</a>
+            <a href="product-dataops.html" class="dropdown-item">DataOps (ETL)</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          솔루션
+          <div class="gnb-dropdown">
+            <a href="solution-commerce.html" class="dropdown-item">커머스/리테일</a>
+            <a href="solution-finance.html" class="dropdown-item">금융/핀테크</a>
+            <a href="solution-travel.html" class="dropdown-item">여행/라이프스타일</a>
+          </div>
+        </div>
+        <a href="pricing.html" class="gnb-item">요금제</a>
+        <div class="gnb-item">
+          리소스
+          <div class="gnb-dropdown">
+            <a href="blog.html" class="dropdown-item">블로그</a>
+            <a href="case-study.html" class="dropdown-item">케이스 스터디</a>
+            <a href="docs.html" class="dropdown-item">기술 문서</a>
+            <a href="webinar.html" class="dropdown-item">웨비나/이벤트</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          회사 소개
+          <div class="gnb-dropdown">
+            <a href="about.html" class="dropdown-item">아이뱅크 AX</a>
+            <a href="partners.html" class="dropdown-item">파트너</a>
+            <a href="newsroom.html" class="dropdown-item">뉴스룸</a>
+          </div>
+        </div>
+      </nav>
+      <div class="header-actions">
+        <button class="lang-switch">KO <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <a href="contact.html" class="btn btn-accent btn-sm">무료 데모 신청 →</a>
+        <button class="mobile-menu-btn" aria-label="메뉴"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  
+  <section class="sol-hero" style="background:linear-gradient(135deg,#7C3AED 0%,#4f46e5 100%)">
+    <div class="container">
+      <div class="badge badge-white" style="margin-bottom:20px;font-size:2rem">💳</div>
+      <h1 style="color:white">금융/핀테크 솔루션</h1>
+      <p style="color:rgba(255,255,255,0.8)">금융/핀테크 업계 특화 마케팅 자동화로<br>경쟁사보다 앞서 나가세요.</p>
+      <a href="contact.html" class="btn btn-accent btn-lg">무료 데모 신청 →</a>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal"><div class="badge badge-primary">Pain Point</div></div>
+      <h2 class="reveal" style="text-align:center;margin-bottom:40px">금융/핀테크 업계의 공통 과제</h2>
+      <div class="sol-pain"><div class="sol-pain-item reveal"><div class="sol-pain-icon">🔒</div><div><h3>강화된 보안 요건</h3><p>금융 데이터를 외부 클라우드로 전송하기 어렵고 규제 준수가 복잡합니다.</p></div></div>
+<div class="sol-pain-item reveal"><div class="sol-pain-icon">📋</div><div><h3>복잡한 컴플라이언스</h3><p>금융당국 규정에 따른 발송 제한, 동의 관리가 수동으로 처리됩니다.</p></div></div>
+<div class="sol-pain-item reveal"><div class="sol-pain-icon">👤</div><div><h3>고객 식별 어려움</h3><p>다양한 금융 상품을 가진 고객의 전체 여정 추적이 불가능합니다.</p></div></div>
+<div class="sol-pain-item reveal"><div class="sol-pain-icon">📉</div><div><h3>높은 이탈율</h3><p>대출·투자 상품 가입 이탈 고객을 적시에 재활성화하지 못합니다.</p></div></div></div>
+    </div>
+  </section>
+  <section class="section" style="background:var(--bg-section)">
+    <div class="container">
+      <div class="section-header reveal"><div class="badge badge-accent">ThinkingBell 솔루션</div></div>
+      <h2 class="reveal" style="text-align:center;margin-bottom:40px">단계별 해결 방법</h2>
+      <div class="sol-flow"><div class="sol-flow-step reveal"><div class="sol-flow-num">1</div><div class="sol-flow-title">온프레미스 배포</div><div class="sol-flow-desc">금융망 내 완전 격리 배포</div></div>
+<div class="sol-flow-step reveal"><div class="sol-flow-num">2</div><div class="sol-flow-title">컴플라이언스 자동화</div><div class="sol-flow-desc">금융당국 규정 자동 준수</div></div>
+<div class="sol-flow-step reveal"><div class="sol-flow-num">3</div><div class="sol-flow-title">통합 고객 뷰</div><div class="sol-flow-desc">전 상품 여정 통합 추적</div></div>
+<div class="sol-flow-step reveal"><div class="sol-flow-num">4</div><div class="sol-flow-title">이탈 방지 자동화</div><div class="sol-flow-desc">가입 이탈 즉시 재활성화 캠페인</div></div></div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="sol-case reveal">
+        <div>
+          <div class="badge badge-white" style="margin-bottom:16px">실제 성과</div>
+          <h2>금융/핀테크 고객사 케이스</h2>
+          <p style="margin-top:12px">TokBell 스마트 라우팅으로 최적 채널 자동 선택. 발송 비용 45% 절감과 동시에 가입 완료율을 28% 향상시켰습니다.</p>
+          <a href="contact.html" class="btn btn-accent" style="margin-top:24px">동일한 성과 경험하기 →</a>
+        </div>
+        <div style="text-align:center">
+          <div class="sol-case-stat">-45%</div>
+          <div class="sol-case-label">도입 6개월 후 성과</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="color:white">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="3" fill="white"/>
+              </svg>
+            </div>
+            ThinkingBell
+          </div>
+          <p>Adobe 3종을 하나로. 비용은 1/3로.<br>아이뱅크 AX사업본부가 만드는<br>한국형 통합 마케팅 인프라 플랫폼.</p>
+          <div style="margin-top:20px">
+            <span class="partner-badge">Adobe 파트너</span>
+            <span class="partner-badge">Infobip</span>
+            <span class="partner-badge">NCP</span>
+            <span class="partner-badge">LG U+</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>제품</h4>
+          <ul class="footer-links">
+            <li><a href="product-analytics.html">Analytics</a></li>
+            <li><a href="product-campaign.html">Campaign</a></li>
+            <li><a href="product-tokbell.html">TokBell</a></li>
+            <li><a href="product-dataops.html">DataOps</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>솔루션</h4>
+          <ul class="footer-links">
+            <li><a href="solution-commerce.html">커머스/리테일</a></li>
+            <li><a href="solution-finance.html">금융/핀테크</a></li>
+            <li><a href="solution-travel.html">여행/라이프</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>리소스</h4>
+          <ul class="footer-links">
+            <li><a href="blog.html">블로그</a></li>
+            <li><a href="case-study.html">케이스 스터디</a></li>
+            <li><a href="docs.html">기술 문서</a></li>
+            <li><a href="webinar.html">웨비나</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>회사</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">아이뱅크 AX</a></li>
+            <li><a href="partners.html">파트너</a></li>
+            <li><a href="newsroom.html">뉴스룸</a></li>
+            <li><a href="contact.html">문의하기</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ibank AX. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">개인정보처리방침</a>
+          <a href="#">이용약관</a>
+          <a href="#">쿠키 설정</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+  <div class="cookie-banner" id="cookie-banner">
+    <span>이 사이트는 최적의 경험을 위해 쿠키를 사용합니다.
+      <a href="#">더 알아보기</a>
+    </span>
+    <button id="cookie-accept" class="btn btn-accent btn-sm" style="white-space:nowrap;flex-shrink:0">동의</button>
+  </div>
+
+  
+<script>
+  // Header scroll
+  const hdr = document.getElementById('site-header');
+  if (hdr) {
+    window.addEventListener('scroll', () => {
+      hdr.classList.toggle('solid', window.scrollY > 60);
+      hdr.classList.toggle('transparent', window.scrollY <= 60);
+    });
+  }
+  // Reveal on scroll
+  const revEls = document.querySelectorAll('.reveal');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revEls.forEach(r => revObs.observe(r));
+
+  // Cookie banner
+  const cookieBtn = document.getElementById('cookie-accept');
+  if (cookieBtn) cookieBtn.addEventListener('click', () => {
+    document.getElementById('cookie-banner').style.display = 'none';
+    localStorage.setItem('cookie-accepted', '1');
+  });
+  if (localStorage.getItem('cookie-accepted')) {
+    const cb = document.getElementById('cookie-banner');
+    if (cb) cb.style.display = 'none';
+  }
+</script>
+
+  
+</body>
+</html>

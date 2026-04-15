@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>데모 신청 | ThinkingBell</title>
+  <meta name="description" content="ThinkingBell 무료 데모 신청 — 30분으로 확인하는 마케팅 혁신"/>
+  
+<style>
+  :root {
+    --brand-primary: #1A3BC4;
+    --brand-accent:  #00C896;
+    --text-primary:  #0D1117;
+    --text-sub:      #4A5568;
+    --bg-base:       #FFFFFF;
+    --bg-section:    #F7F9FC;
+    --border:        #E2E8F0;
+    --white:         #ffffff;
+    --radius-sm:     8px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --shadow-sm:     0 2px 8px rgba(26,59,196,0.08);
+    --shadow-md:     0 8px 32px rgba(26,59,196,0.12);
+    --shadow-lg:     0 24px 64px rgba(26,59,196,0.16);
+    --transition:    all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary); background: var(--bg-base);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+  /* Layout */
+  .container       { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .container-wide  { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  .section         { padding: 96px 0; }
+  .section-sm      { padding: 64px 0; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-size: 1rem; font-weight: 600; transition: var(--transition);
+    white-space: nowrap; cursor: pointer; border: none; font-family: inherit;
+  }
+  .btn-primary  { background: var(--brand-primary); color: var(--white); box-shadow: 0 4px 16px rgba(26,59,196,0.3); }
+  .btn-primary:hover  { background: #1530a8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,59,196,0.4); }
+  .btn-accent   { background: var(--brand-accent); color: var(--white); box-shadow: 0 4px 16px rgba(0,200,150,0.3); }
+  .btn-accent:hover   { background: #00b085; transform: translateY(-2px); }
+  .btn-outline  { background: transparent; color: var(--brand-primary); border: 2px solid var(--brand-primary); }
+  .btn-outline:hover  { background: var(--brand-primary); color: var(--white); }
+  .btn-ghost    { background: rgba(255,255,255,0.1); color: var(--white); border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+  .btn-ghost:hover    { background: rgba(255,255,255,0.2); }
+  .btn-lg       { padding: 18px 36px; font-size: 1.125rem; border-radius: var(--radius-md); }
+  .btn-sm       { padding: 10px 20px; font-size: 0.875rem; }
+
+  /* Badge */
+  .badge         { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px; font-size: 0.8125rem; font-weight: 600; }
+  .badge-primary { background: rgba(26,59,196,0.1); color: var(--brand-primary); border: 1px solid rgba(26,59,196,0.2); }
+  .badge-accent  { background: rgba(0,200,150,0.1); color: #00a67a; border: 1px solid rgba(0,200,150,0.2); }
+  .badge-white   { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+
+  /* Header */
+  .header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 24px; height: 72px; display: flex; align-items: center;
+    transition: var(--transition);
+  }
+  .header.transparent { background: transparent; }
+  .header.solid {
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header.always-solid {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--brand-primary); }
+  .logo-icon { width: 36px; height: 36px; background: var(--brand-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { display: block; }
+  .gnb { display: flex; align-items: center; gap: 4px; }
+  .gnb-item {
+    position: relative; padding: 8px 16px;
+    font-size: 0.9375rem; font-weight: 500; color: var(--text-primary);
+    border-radius: var(--radius-sm); transition: var(--transition); cursor: pointer;
+  }
+  .gnb-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+  .lang-switch {
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px;
+    border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 600;
+    color: var(--text-sub); border: 1px solid var(--border); cursor: pointer;
+    transition: var(--transition); background: transparent;
+  }
+  .lang-switch:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+  .gnb-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+    padding: 8px; opacity: 0; visibility: hidden;
+    transform: translateY(-8px); transition: var(--transition); z-index: 100;
+  }
+  .gnb-item:hover .gnb-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-item {
+    display: block; padding: 10px 14px; font-size: 0.9rem;
+    color: var(--text-primary); border-radius: var(--radius-sm); transition: var(--transition);
+  }
+  .dropdown-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+
+  /* Mobile menu btn */
+  .mobile-menu-btn {
+    display: none; flex-direction: column; gap: 5px;
+    width: 32px; height: 32px; cursor: pointer; justify-content: center;
+    background: none; border: none;
+  }
+  .mobile-menu-btn span { width: 100%; height: 2px; background: var(--text-primary); border-radius: 2px; transition: var(--transition); display: block; }
+
+  /* Footer */
+  .footer { background: var(--text-primary); color: var(--white); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-top: 16px; line-height: 1.7; }
+  .footer-col h4 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a { color: rgba(255,255,255,0.65); font-size: 0.9rem; transition: var(--transition); }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom p { color: rgba(255,255,255,0.45); font-size: 0.875rem; }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { color: rgba(255,255,255,0.45); font-size: 0.875rem; transition: var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,0.8); }
+  .partner-badge {
+    padding: 6px 16px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+    font-size: 0.8125rem; font-weight: 600; color: rgba(255,255,255,0.65);
+    display: inline-block; margin: 4px;
+  }
+
+  /* Section helpers */
+  .section-header { text-align: center; margin-bottom: 16px; }
+  .section-sub { text-align: center; color: var(--text-sub); font-size: 1.125rem; max-width: 600px; margin: 0 auto 56px; }
+  .text-center { text-align: center; }
+  .gradient-text { background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Cookie Banner */
+  .cookie-banner {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: var(--text-primary); color: white;
+    padding: 16px 24px; border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 16px;
+    max-width: 640px; width: calc(100% - 48px); box-shadow: var(--shadow-lg);
+  }
+  .cookie-banner span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+  .cookie-banner a { color: var(--brand-accent); }
+
+  /* Headings */
+  h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
+  h2 { font-size: clamp(1.5rem,3vw,2.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+  h3 { font-size: clamp(1.1rem,2vw,1.5rem); font-weight: 600; line-height: 1.3; }
+
+  /* Responsive */
+  @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (max-width: 768px) {
+    .gnb, .lang-switch { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section { padding: 64px 0; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .btn-lg { padding: 14px 24px; font-size: 1rem; }
+  }
+</style>
+
+  
+<style>
+  .contact-hero { padding: 140px 0 60px; background: linear-gradient(135deg,#0a1628 0%,#1A3BC4 100%); text-align: center; }
+  .contact-hero h1 { color: white; font-size: clamp(2rem,4vw,2.75rem); font-weight: 800; margin-bottom: 16px; }
+  .contact-hero p  { color: rgba(255,255,255,0.75); font-size: 1.1rem; max-width: 520px; margin: 0 auto; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding: 80px 0; }
+  .contact-form { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 48px; box-shadow: var(--shadow-md); }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9375rem; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 14px 16px; border: 2px solid var(--border);
+    border-radius: var(--radius-sm); font-size: 1rem; font-family: inherit;
+    transition: var(--transition); background: white;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(26,59,196,0.08);
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .submit-btn { width: 100%; padding: 18px; font-size: 1.05rem; font-weight: 700; background: var(--brand-primary); color: white; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); border: none; margin-top: 8px; font-family: inherit; }
+  .submit-btn:hover { background: #1530a8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,59,196,0.4); }
+  .form-note { font-size: 0.8125rem; color: var(--text-sub); text-align: center; margin-top: 12px; }
+  .contact-benefit { display: flex; align-items: flex-start; gap: 16px; padding: 24px; background: var(--bg-section); border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 16px; }
+  .c-ben-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: rgba(26,59,196,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem; }
+  .contact-benefit h3 { font-weight: 700; margin-bottom: 4px; }
+  .contact-benefit p  { color: var(--text-sub); font-size: 0.9rem; line-height: 1.6; }
+  .direct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  .direct-card { padding: 20px; background: white; border: 1px solid var(--border); border-radius: var(--radius-md); text-align: center; transition: var(--transition); }
+  .direct-card:hover { border-color: var(--brand-primary); box-shadow: var(--shadow-sm); }
+  .direct-card-icon { font-size: 1.75rem; margin-bottom: 8px; }
+  .direct-card h3   { font-size: 0.9375rem; font-weight: 700; margin-bottom: 4px; }
+  .direct-card p    { font-size: 0.8125rem; color: var(--text-sub); }
+  /* Success Modal */
+  .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
+  .success-modal { background: white; border-radius: var(--radius-lg); padding: 48px; text-align: center; max-width: 460px; width: 90%; }
+  .success-icon { width: 72px; height: 72px; background: rgba(0,200,150,0.1); border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; }
+  .success-modal h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; }
+  .success-modal p  { color: var(--text-sub); margin-bottom: 28px; line-height: 1.7; }
+  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .direct-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+
+</head>
+<body>
+  
+  <header class="header always-solid" >
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" fill="rgba(255,255,255,0.25)"/>
+            <circle cx="10" cy="10" r="3" fill="white"/>
+            <path d="M10 3v14M3 10h14" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        ThinkingBell
+      </a>
+      <nav class="gnb">
+        <div class="gnb-item">
+          제품
+          <div class="gnb-dropdown">
+            <a href="product-overview.html" class="dropdown-item">제품 개요</a>
+            <a href="product-analytics.html" class="dropdown-item">ThinkingData Analytics</a>
+            <a href="product-campaign.html" class="dropdown-item">ThinkingData Campaign</a>
+            <a href="product-tokbell.html" class="dropdown-item">TokBell 메시징</a>
+            <a href="product-dataops.html" class="dropdown-item">DataOps (ETL)</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          솔루션
+          <div class="gnb-dropdown">
+            <a href="solution-commerce.html" class="dropdown-item">커머스/리테일</a>
+            <a href="solution-finance.html" class="dropdown-item">금융/핀테크</a>
+            <a href="solution-travel.html" class="dropdown-item">여행/라이프스타일</a>
+          </div>
+        </div>
+        <a href="pricing.html" class="gnb-item">요금제</a>
+        <div class="gnb-item">
+          리소스
+          <div class="gnb-dropdown">
+            <a href="blog.html" class="dropdown-item">블로그</a>
+            <a href="case-study.html" class="dropdown-item">케이스 스터디</a>
+            <a href="docs.html" class="dropdown-item">기술 문서</a>
+            <a href="webinar.html" class="dropdown-item">웨비나/이벤트</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          회사 소개
+          <div class="gnb-dropdown">
+            <a href="about.html" class="dropdown-item">아이뱅크 AX</a>
+            <a href="partners.html" class="dropdown-item">파트너</a>
+            <a href="newsroom.html" class="dropdown-item">뉴스룸</a>
+          </div>
+        </div>
+      </nav>
+      <div class="header-actions">
+        <button class="lang-switch">KO <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <a href="contact.html" class="btn btn-accent btn-sm">무료 데모 신청 →</a>
+        <button class="mobile-menu-btn" aria-label="메뉴"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  
+  <div class="contact-hero">
+    <div class="container">
+      <div class="badge badge-white" style="margin-bottom:20px">🎯 무료 데모 신청</div>
+      <h1>30분으로 확인하는<br>마케팅 혁신</h1>
+      <p>전문 컨설턴트가 귀사 비즈니스에 맞춘 맞춤형 데모를 제공합니다.<br>영업일 1일 이내 연락드립니다.</p>
+    </div>
+  </div>
+
+  <section style="background:var(--bg-section);padding-top:0">
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <div class="contact-form">
+            <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:8px">데모 신청하기</h2>
+            <p style="color:var(--text-sub);margin-bottom:32px;font-size:0.9375rem">필수 정보를 입력해주시면 담당자가 빠르게 연락드립니다.</p>
+            <form id="demo-form">
+              <div class="form-row">
+                <div class="form-group"><label>이름 *</label><input type="text" placeholder="홍길동" required/></div>
+                <div class="form-group"><label>직책</label><input type="text" placeholder="마케팅 매니저"/></div>
+              </div>
+              <div class="form-group"><label>업무 이메일 *</label><input type="email" placeholder="name@company.com" required/></div>
+              <div class="form-row">
+                <div class="form-group"><label>회사명 *</label><input type="text" placeholder="(주)회사이름" required/></div>
+                <div class="form-group"><label>직원 수</label>
+                  <select>
+                    <option>선택하세요</option>
+                    <option>1~10명</option><option>11~50명</option><option>51~200명</option>
+                    <option>201~500명</option><option>500명 이상</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group"><label>주요 관심 기능</label>
+                <select>
+                  <option>선택하세요</option>
+                  <option>Analytics (행동 분석)</option><option>Campaign (자동화)</option>
+                  <option>TokBell (메시징)</option><option>DataOps (ETL)</option><option>전체 플랫폼</option>
+                </select>
+              </div>
+              <div class="form-group"><label>추가 문의사항</label><textarea placeholder="현재 사용 중인 도구, 해결하고 싶은 과제 등을 자유롭게 입력해주세요."></textarea></div>
+              <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:18px">
+                <input type="checkbox" id="privacy" required style="width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:var(--brand-primary)"/>
+                <label for="privacy" style="font-size:0.875rem;color:var(--text-sub);cursor:pointer">
+                  <a href="#" style="color:var(--brand-primary)">개인정보 처리방침</a>에 동의합니다. (필수)
+                </label>
+              </div>
+              <button type="submit" class="submit-btn">무료 데모 신청하기 →</button>
+              <p class="form-note">🔒 귀하의 정보는 데모 목적으로만 사용되며, 제3자에게 제공되지 않습니다.</p>
+            </form>
+          </div>
+        </div>
+        <div>
+          <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:24px">데모에서 확인하실 수 있어요</h2>
+          <div class="contact-benefit">
+            <div class="c-ben-icon">📊</div>
+            <div><h3>실시간 분석 대시보드 시연</h3><p>퍼널, 코호트, 리텐션 분석을 실제 데이터로 직접 확인하세요.</p></div>
+          </div>
+          <div class="contact-benefit">
+            <div class="c-ben-icon">💰</div>
+            <div><h3>맞춤형 ROI 계산</h3><p>현재 사용 중인 도구 대비 비용 절감 효과를 구체적으로 제시합니다.</p></div>
+          </div>
+          <div class="contact-benefit">
+            <div class="c-ben-icon">🗺️</div>
+            <div><h3>도입 로드맵 제안</h3><p>단계별 도입 계획과 마이그레이션 일정을 구체적으로 안내합니다.</p></div>
+          </div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">다른 방법으로 연락하기</h3>
+          <div class="direct-grid">
+            <div class="direct-card"><div class="direct-card-icon">📧</div><h3>이메일</h3><p>sales@thinkingbell.ai</p></div>
+            <div class="direct-card"><div class="direct-card-icon">💬</div><h3>카카오</h3><p>@ThinkingBell</p></div>
+            <div class="direct-card"><div class="direct-card-icon">📞</div><h3>전화</h3><p>02-1234-5678</p></div>
+            <div class="direct-card"><div class="direct-card-icon">🏢</div><h3>방문 상담</h3><p>서울 강남구 테헤란로</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Modal -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-modal">
+      <div class="success-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M8 18l6 6 14-14" stroke="#00C896" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>데모 신청 완료! 🎉</h2>
+      <p>신청해 주셔서 감사합니다.<br>영업일 1일 이내에 담당 컨설턴트가 연락드립니다.<br><br>이메일로 확인서가 발송되었습니다.</p>
+      <button id="close-success" class="btn btn-primary" style="width:100%;justify-content:center">확인</button>
+    </div>
+  </div>
+
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="color:white">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="3" fill="white"/>
+              </svg>
+            </div>
+            ThinkingBell
+          </div>
+          <p>Adobe 3종을 하나로. 비용은 1/3로.<br>아이뱅크 AX사업본부가 만드는<br>한국형 통합 마케팅 인프라 플랫폼.</p>
+          <div style="margin-top:20px">
+            <span class="partner-badge">Adobe 파트너</span>
+            <span class="partner-badge">Infobip</span>
+            <span class="partner-badge">NCP</span>
+            <span class="partner-badge">LG U+</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>제품</h4>
+          <ul class="footer-links">
+            <li><a href="product-analytics.html">Analytics</a></li>
+            <li><a href="product-campaign.html">Campaign</a></li>
+            <li><a href="product-tokbell.html">TokBell</a></li>
+            <li><a href="product-dataops.html">DataOps</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>솔루션</h4>
+          <ul class="footer-links">
+            <li><a href="solution-commerce.html">커머스/리테일</a></li>
+            <li><a href="solution-finance.html">금융/핀테크</a></li>
+            <li><a href="solution-travel.html">여행/라이프</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>리소스</h4>
+          <ul class="footer-links">
+            <li><a href="blog.html">블로그</a></li>
+            <li><a href="case-study.html">케이스 스터디</a></li>
+            <li><a href="docs.html">기술 문서</a></li>
+            <li><a href="webinar.html">웨비나</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>회사</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">아이뱅크 AX</a></li>
+            <li><a href="partners.html">파트너</a></li>
+            <li><a href="newsroom.html">뉴스룸</a></li>
+            <li><a href="contact.html">문의하기</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ibank AX. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">개인정보처리방침</a>
+          <a href="#">이용약관</a>
+          <a href="#">쿠키 설정</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+  <div class="cookie-banner" id="cookie-banner">
+    <span>이 사이트는 최적의 경험을 위해 쿠키를 사용합니다.
+      <a href="#">더 알아보기</a>
+    </span>
+    <button id="cookie-accept" class="btn btn-accent btn-sm" style="white-space:nowrap;flex-shrink:0">동의</button>
+  </div>
+
+  
+<script>
+  // Header scroll
+  const hdr = document.getElementById('site-header');
+  if (hdr) {
+    window.addEventListener('scroll', () => {
+      hdr.classList.toggle('solid', window.scrollY > 60);
+      hdr.classList.toggle('transparent', window.scrollY <= 60);
+    });
+  }
+  // Reveal on scroll
+  const revEls = document.querySelectorAll('.reveal');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revEls.forEach(r => revObs.observe(r));
+
+  // Cookie banner
+  const cookieBtn = document.getElementById('cookie-accept');
+  if (cookieBtn) cookieBtn.addEventListener('click', () => {
+    document.getElementById('cookie-banner').style.display = 'none';
+    localStorage.setItem('cookie-accepted', '1');
+  });
+  if (localStorage.getItem('cookie-accepted')) {
+    const cb = document.getElementById('cookie-banner');
+    if (cb) cb.style.display = 'none';
+  }
+</script>
+
+  
+<script>
+  document.getElementById('demo-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('success-overlay').style.display = 'flex';
+  });
+  document.getElementById('close-success').addEventListener('click', function() {
+    document.getElementById('success-overlay').style.display = 'none';
+  });
+  document.getElementById('success-overlay').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>요금제 | ThinkingBell</title>
+  <meta name="description" content="규모에 맞는 합리적인 마케팅 인프라 요금제"/>
+  
+<style>
+  :root {
+    --brand-primary: #1A3BC4;
+    --brand-accent:  #00C896;
+    --text-primary:  #0D1117;
+    --text-sub:      #4A5568;
+    --bg-base:       #FFFFFF;
+    --bg-section:    #F7F9FC;
+    --border:        #E2E8F0;
+    --white:         #ffffff;
+    --radius-sm:     8px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --shadow-sm:     0 2px 8px rgba(26,59,196,0.08);
+    --shadow-md:     0 8px 32px rgba(26,59,196,0.12);
+    --shadow-lg:     0 24px 64px rgba(26,59,196,0.16);
+    --transition:    all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary); background: var(--bg-base);
+    line-height: 1.6; overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+  /* Layout */
+  .container       { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .container-wide  { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  .section         { padding: 96px 0; }
+  .section-sm      { padding: 64px 0; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-size: 1rem; font-weight: 600; transition: var(--transition);
+    white-space: nowrap; cursor: pointer; border: none; font-family: inherit;
+  }
+  .btn-primary  { background: var(--brand-primary); color: var(--white); box-shadow: 0 4px 16px rgba(26,59,196,0.3); }
+  .btn-primary:hover  { background: #1530a8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,59,196,0.4); }
+  .btn-accent   { background: var(--brand-accent); color: var(--white); box-shadow: 0 4px 16px rgba(0,200,150,0.3); }
+  .btn-accent:hover   { background: #00b085; transform: translateY(-2px); }
+  .btn-outline  { background: transparent; color: var(--brand-primary); border: 2px solid var(--brand-primary); }
+  .btn-outline:hover  { background: var(--brand-primary); color: var(--white); }
+  .btn-ghost    { background: rgba(255,255,255,0.1); color: var(--white); border: 2px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); }
+  .btn-ghost:hover    { background: rgba(255,255,255,0.2); }
+  .btn-lg       { padding: 18px 36px; font-size: 1.125rem; border-radius: var(--radius-md); }
+  .btn-sm       { padding: 10px 20px; font-size: 0.875rem; }
+
+  /* Badge */
+  .badge         { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 100px; font-size: 0.8125rem; font-weight: 600; }
+  .badge-primary { background: rgba(26,59,196,0.1); color: var(--brand-primary); border: 1px solid rgba(26,59,196,0.2); }
+  .badge-accent  { background: rgba(0,200,150,0.1); color: #00a67a; border: 1px solid rgba(0,200,150,0.2); }
+  .badge-white   { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+
+  /* Header */
+  .header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 24px; height: 72px; display: flex; align-items: center;
+    transition: var(--transition);
+  }
+  .header.transparent { background: transparent; }
+  .header.solid {
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header.always-solid {
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--brand-primary); }
+  .logo-icon { width: 36px; height: 36px; background: var(--brand-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { display: block; }
+  .gnb { display: flex; align-items: center; gap: 4px; }
+  .gnb-item {
+    position: relative; padding: 8px 16px;
+    font-size: 0.9375rem; font-weight: 500; color: var(--text-primary);
+    border-radius: var(--radius-sm); transition: var(--transition); cursor: pointer;
+  }
+  .gnb-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+  .lang-switch {
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px;
+    border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 600;
+    color: var(--text-sub); border: 1px solid var(--border); cursor: pointer;
+    transition: var(--transition); background: transparent;
+  }
+  .lang-switch:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+  .gnb-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+    padding: 8px; opacity: 0; visibility: hidden;
+    transform: translateY(-8px); transition: var(--transition); z-index: 100;
+  }
+  .gnb-item:hover .gnb-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  .dropdown-item {
+    display: block; padding: 10px 14px; font-size: 0.9rem;
+    color: var(--text-primary); border-radius: var(--radius-sm); transition: var(--transition);
+  }
+  .dropdown-item:hover { background: var(--bg-section); color: var(--brand-primary); }
+
+  /* Mobile menu btn */
+  .mobile-menu-btn {
+    display: none; flex-direction: column; gap: 5px;
+    width: 32px; height: 32px; cursor: pointer; justify-content: center;
+    background: none; border: none;
+  }
+  .mobile-menu-btn span { width: 100%; height: 2px; background: var(--text-primary); border-radius: 2px; transition: var(--transition); display: block; }
+
+  /* Footer */
+  .footer { background: var(--text-primary); color: var(--white); padding: 64px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-top: 16px; line-height: 1.7; }
+  .footer-col h4 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a { color: rgba(255,255,255,0.65); font-size: 0.9rem; transition: var(--transition); }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom p { color: rgba(255,255,255,0.45); font-size: 0.875rem; }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { color: rgba(255,255,255,0.45); font-size: 0.875rem; transition: var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,0.8); }
+  .partner-badge {
+    padding: 6px 16px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+    font-size: 0.8125rem; font-weight: 600; color: rgba(255,255,255,0.65);
+    display: inline-block; margin: 4px;
+  }
+
+  /* Section helpers */
+  .section-header { text-align: center; margin-bottom: 16px; }
+  .section-sub { text-align: center; color: var(--text-sub); font-size: 1.125rem; max-width: 600px; margin: 0 auto 56px; }
+  .text-center { text-align: center; }
+  .gradient-text { background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Cookie Banner */
+  .cookie-banner {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 9999; background: var(--text-primary); color: white;
+    padding: 16px 24px; border-radius: var(--radius-md);
+    display: flex; align-items: center; gap: 16px;
+    max-width: 640px; width: calc(100% - 48px); box-shadow: var(--shadow-lg);
+  }
+  .cookie-banner span { font-size: 0.875rem; color: rgba(255,255,255,0.8); }
+  .cookie-banner a { color: var(--brand-accent); }
+
+  /* Headings */
+  h1 { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
+  h2 { font-size: clamp(1.5rem,3vw,2.5rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+  h3 { font-size: clamp(1.1rem,2vw,1.5rem); font-weight: 600; line-height: 1.3; }
+
+  /* Responsive */
+  @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  @media (max-width: 768px) {
+    .gnb, .lang-switch { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section { padding: 64px 0; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .btn-lg { padding: 14px 24px; font-size: 1rem; }
+  }
+</style>
+
+  
+<style>
+  .pricing-hero { padding: 140px 0 64px; text-align: center; background: var(--bg-section); border-bottom: 1px solid var(--border); }
+  .pricing-hero h1 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 16px; }
+  .pricing-hero p  { color: var(--text-sub); font-size: 1.1rem; max-width: 480px; margin: 0 auto; }
+  /* Toggle */
+  .billing-toggle { display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 48px; }
+  .toggle-label { font-weight: 600; font-size: 0.9375rem; }
+  .toggle-sw { position: relative; width: 56px; height: 28px; background: var(--bg-section); border: 2px solid var(--border); border-radius: 100px; cursor: pointer; transition: var(--transition); }
+  .toggle-sw.on { background: var(--brand-primary); border-color: var(--brand-primary); }
+  .toggle-knob { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: var(--transition); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  .toggle-sw.on .toggle-knob { left: calc(100% - 22px); }
+  .discount-bdg { background: rgba(0,200,150,0.1); color: #00a67a; border: 1px solid rgba(0,200,150,0.2); padding: 4px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; }
+  /* Full Table */
+  .price-table { width: 100%; border-collapse: collapse; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+  .price-table th { padding: 24px 20px; text-align: center; background: var(--bg-section); border-bottom: 2px solid var(--border); }
+  .price-table th.feat-col { text-align: left; min-width: 200px; }
+  .price-table th.hl { background: var(--brand-primary); color: white; }
+  .price-table td { padding: 16px 20px; border-bottom: 1px solid var(--border); text-align: center; font-size: 0.9375rem; background: white; }
+  .price-table td.feat-col { text-align: left; font-weight: 500; }
+  .price-table td.hl { background: rgba(26,59,196,0.04); }
+  .price-table .sec-row td { background: var(--bg-section); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-sub); text-align: left; padding: 12px 20px; }
+  .price-table tr:hover td:not(.sec-row td) { background: #fafbff; }
+  .chk { color: var(--brand-accent); }
+  .dash { color: #d1d5db; }
+  /* ROI */
+  .roi-box { background: var(--bg-section); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 48px; }
+  .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .roi-field { margin-bottom: 20px; }
+  .roi-field label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9375rem; }
+  .roi-field input { width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; font-family: inherit; transition: var(--transition); }
+  .roi-field input:focus { outline: none; border-color: var(--brand-primary); }
+  .roi-result { background: linear-gradient(135deg,var(--brand-primary) 0%,#0d3b8a 100%); border-radius: var(--radius-lg); padding: 40px; color: white; text-align: center; }
+  .roi-num   { font-size: 3rem; font-weight: 800; color: var(--brand-accent); line-height: 1; }
+  .roi-items { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+  .roi-item  { display: flex; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.08); border-radius: 6px; font-size: 0.875rem; }
+  .roi-item span:last-child { color: var(--brand-accent); font-weight: 700; }
+  /* Onprem */
+  .onprem { background: var(--text-primary); border-radius: var(--radius-lg); padding: 56px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+  .onprem h2 { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 12px; }
+  .onprem p  { color: rgba(255,255,255,0.65); line-height: 1.7; }
+  /* FAQ */
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q    { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; cursor: pointer; font-weight: 600; font-size: 1rem; gap: 16px; background: none; border: none; width: 100%; text-align: left; font-family: inherit; }
+  .faq-q:hover { color: var(--brand-primary); }
+  .faq-icon { width: 24px; height: 24px; border-radius: 50%; background: var(--bg-section); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: var(--transition); flex-shrink: 0; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--brand-primary); color: white; }
+  .faq-a    { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+  .faq-item.open .faq-a { max-height: 400px; padding-bottom: 20px; }
+  .faq-a p  { color: var(--text-sub); line-height: 1.7; }
+  @media (max-width: 768px) { .roi-grid, .onprem { grid-template-columns: 1fr; } .price-table { font-size: 0.8rem; } .price-table th, .price-table td { padding: 10px 8px; } }
+</style>
+
+</head>
+<body>
+  
+  <header class="header always-solid" >
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" fill="rgba(255,255,255,0.25)"/>
+            <circle cx="10" cy="10" r="3" fill="white"/>
+            <path d="M10 3v14M3 10h14" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        ThinkingBell
+      </a>
+      <nav class="gnb">
+        <div class="gnb-item">
+          제품
+          <div class="gnb-dropdown">
+            <a href="product-overview.html" class="dropdown-item">제품 개요</a>
+            <a href="product-analytics.html" class="dropdown-item">ThinkingData Analytics</a>
+            <a href="product-campaign.html" class="dropdown-item">ThinkingData Campaign</a>
+            <a href="product-tokbell.html" class="dropdown-item">TokBell 메시징</a>
+            <a href="product-dataops.html" class="dropdown-item">DataOps (ETL)</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          솔루션
+          <div class="gnb-dropdown">
+            <a href="solution-commerce.html" class="dropdown-item">커머스/리테일</a>
+            <a href="solution-finance.html" class="dropdown-item">금융/핀테크</a>
+            <a href="solution-travel.html" class="dropdown-item">여행/라이프스타일</a>
+          </div>
+        </div>
+        <a href="pricing.html" class="gnb-item">요금제</a>
+        <div class="gnb-item">
+          리소스
+          <div class="gnb-dropdown">
+            <a href="blog.html" class="dropdown-item">블로그</a>
+            <a href="case-study.html" class="dropdown-item">케이스 스터디</a>
+            <a href="docs.html" class="dropdown-item">기술 문서</a>
+            <a href="webinar.html" class="dropdown-item">웨비나/이벤트</a>
+          </div>
+        </div>
+        <div class="gnb-item">
+          회사 소개
+          <div class="gnb-dropdown">
+            <a href="about.html" class="dropdown-item">아이뱅크 AX</a>
+            <a href="partners.html" class="dropdown-item">파트너</a>
+            <a href="newsroom.html" class="dropdown-item">뉴스룸</a>
+          </div>
+        </div>
+      </nav>
+      <div class="header-actions">
+        <button class="lang-switch">KO <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <a href="contact.html" class="btn btn-accent btn-sm">무료 데모 신청 →</a>
+        <button class="mobile-menu-btn" aria-label="메뉴"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  
+  <section class="pricing-hero">
+    <div class="container">
+      <div class="badge badge-primary reveal" style="margin-bottom:16px">요금제</div>
+      <h1 class="reveal">규모에 맞는 합리적인<br>마케팅 인프라</h1>
+      <p class="reveal">Entry부터 Flagship까지, 성장 단계에 맞는 플랜을 선택하세요.<br>모든 플랜에 무료 온보딩 지원이 포함됩니다.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="billing-toggle reveal">
+        <span class="toggle-label" id="lbl-month">월간</span>
+        <div class="toggle-sw on" id="billing-toggle"><div class="toggle-knob"></div></div>
+        <span class="toggle-label" id="lbl-year" style="color:var(--brand-primary)">연간</span>
+        <span class="discount-bdg">20% 절약</span>
+      </div>
+      <div class="reveal" style="overflow-x:auto">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th class="feat-col">기능 비교</th>
+              <th>
+                <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-sub);margin-bottom:8px">Entry</div>
+                <div style="font-size:1.6rem;font-weight:800" id="price-entry">연 1,600만원</div>
+                <div style="font-size:0.8rem;color:var(--text-sub);margin:4px 0 14px">소규모 팀</div>
+                <a href="contact.html" class="btn btn-outline btn-sm">시작하기</a>
+              </th>
+              <th>
+                <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-sub);margin-bottom:8px">Standard</div>
+                <div style="font-size:1.6rem;font-weight:800">별도 문의</div>
+                <div style="font-size:0.8rem;color:var(--text-sub);margin:4px 0 14px">성장 팀</div>
+                <a href="contact.html" class="btn btn-outline btn-sm">문의하기</a>
+              </th>
+              <th class="hl">
+                <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;opacity:0.7;margin-bottom:8px">Premium</div>
+                <div style="font-size:1.6rem;font-weight:800">별도 문의</div>
+                <div style="font-size:0.8rem;opacity:0.7;margin:4px 0 14px">대규모 조직</div>
+                <a href="contact.html" class="btn btn-sm" style="background:var(--brand-accent);color:white">가장 인기</a>
+              </th>
+              <th>
+                <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-sub);margin-bottom:8px">Flagship</div>
+                <div style="font-size:1.6rem;font-weight:800">연 3억~</div>
+                <div style="font-size:0.8rem;color:var(--text-sub);margin:4px 0 14px">엔터프라이즈</div>
+                <a href="contact.html" class="btn btn-outline btn-sm">엔터프라이즈</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="sec-row"><td colspan="5">처리 용량</td></tr>
+            <tr><td class="feat-col">월 이벤트</td><td>1천만건</td><td>1억건</td><td class="hl">무제한</td><td>무제한</td></tr>
+            <tr><td class="feat-col">MAU</td><td>10만</td><td>100만</td><td class="hl">무제한</td><td>무제한</td></tr>
+            <tr><td class="feat-col">데이터 보관</td><td>12개월</td><td>24개월</td><td class="hl">36개월</td><td>무제한</td></tr>
+            <tr class="sec-row"><td colspan="5">Analytics</td></tr>
+            <tr><td class="feat-col">퍼널/코호트 분석</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">실시간 세그멘테이션</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">A/B 테스트</td><td><span class="dash">—</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">AI 이탈 예측</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr class="sec-row"><td colspan="5">캠페인 & 발송</td></tr>
+            <tr><td class="feat-col">이메일 캠페인</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">카카오 알림톡</td><td><span class="dash">—</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">자동화 캠페인</td><td><span class="dash">—</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+            <tr class="sec-row"><td colspan="5">인프라 & 보안</td></tr>
+            <tr><td class="feat-col">온프레미스</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td class="hl"><span class="dash">—</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">전용 인프라</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td class="hl"><span class="dash">—</span></td><td><span class="chk">✓</span></td></tr>
+            <tr><td class="feat-col">SLA</td><td>99.9%</td><td>99.9%</td><td class="hl">99.95%</td><td>99.99%</td></tr>
+            <tr class="sec-row"><td colspan="5">지원</td></tr>
+            <tr><td class="feat-col">온보딩 지원</td><td>이메일</td><td>이메일+Zoom</td><td class="hl">전담 CSM</td><td>전담 엔지니어</td></tr>
+            <tr><td class="feat-col">기술 지원 SLA</td><td>48h</td><td>24h</td><td class="hl">4h</td><td>24/7</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Calculator -->
+  <section class="section-sm" style="background:var(--bg-section)">
+    <div class="container">
+      <div class="section-header reveal"><div class="badge badge-primary">ROI 계산기</div></div>
+      <h2 class="reveal" style="text-align:center;margin-bottom:12px">직접 절감 비용을 계산해보세요</h2>
+      <p class="section-sub reveal">현재 사용 중인 마케팅 툴 비용을 입력하면 절감 효과를 바로 확인합니다.</p>
+      <div class="roi-box reveal">
+        <div class="roi-grid">
+          <div>
+            <div class="roi-field"><label>현재 Analytics 도구 연간 비용</label><input type="number" id="roi-a" class="roi-input" value="40000000" placeholder="40,000,000"/></div>
+            <div class="roi-field"><label>현재 캠페인 도구 연간 비용</label><input type="number" id="roi-c" class="roi-input" value="30000000" placeholder="30,000,000"/></div>
+            <div class="roi-field"><label>현재 발송 도구 연간 비용</label><input type="number" id="roi-m" class="roi-input" value="20000000" placeholder="20,000,000"/></div>
+          </div>
+          <div class="roi-result">
+            <div style="font-size:0.9rem;color:rgba(255,255,255,0.6);margin-bottom:8px">연간 절감 예상액</div>
+            <div class="roi-num" id="roi-saving">약 6,400만원</div>
+            <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-bottom:16px">기존 대비 약 70% 비용 절감</div>
+            <div class="roi-items">
+              <div class="roi-item"><span>현재 연간 지출</span><span id="roi-current">9,000만원</span></div>
+              <div class="roi-item"><span>ThinkingBell 예상 비용</span><span id="roi-new">~2,600만원</span></div>
+              <div class="roi-item"><span>절감율</span><span id="roi-rate">약 71%</span></div>
+            </div>
+            <a href="contact.html" class="btn btn-accent" style="width:100%;justify-content:center;margin-top:20px">절감 효과 상담 받기 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- On-Premises -->
+  <section class="section">
+    <div class="container">
+      <div class="onprem reveal">
+        <div>
+          <div class="badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.2);margin-bottom:16px">온프레미스</div>
+          <h2>데이터를 내부망에<br>두어야 한다면?</h2>
+          <p style="margin-top:12px">금융, 공공, 의료 등 보안이 중요한 업종을 위한 온프레미스/폐쇄망 배포를 지원합니다. 완전한 데이터 주권을 보장하면서도 동일한 기능을 제공합니다.</p>
+        </div>
+        <a href="contact.html" class="btn btn-accent btn-lg">온프레미스 도입 상담 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-sm" style="background:var(--bg-section)">
+    <div class="container">
+      <div class="badge badge-primary reveal" style="margin-bottom:16px;display:inline-flex">FAQ</div>
+      <h2 class="reveal" style="font-size:2rem;font-weight:800;margin-bottom:40px">자주 묻는 질문</h2>
+      <div class="reveal">
+        <div class="faq-item"><button class="faq-q"><span>도입 초기 비용이 별도로 있나요?</span><div class="faq-icon">+</div></button><div class="faq-a"><p>Entry 플랜의 경우 별도 초기 비용 없이 구독형으로 시작할 수 있습니다. Standard 이상은 온보딩 설정 지원이 포함되며, 대규모 커스터마이징이 필요한 경우 별도 컨설팅 비용이 발생할 수 있습니다.</p></div></div>
+        <div class="faq-item"><button class="faq-q"><span>기존 Adobe / Amplitude 데이터를 마이그레이션할 수 있나요?</span><div class="faq-icon">+</div></button><div class="faq-a"><p>네, 전담 마이그레이션 팀이 기존 데이터 소스에서 ThinkingBell로의 데이터 이관을 지원합니다. Standard 이상 플랜에서는 마이그레이션 지원이 기본 포함됩니다.</p></div></div>
+        <div class="faq-item"><button class="faq-q"><span>계약 기간은 최소 얼마인가요?</span><div class="faq-icon">+</div></button><div class="faq-a"><p>기본 계약은 연간 단위로 진행됩니다. 월간 결제 옵션도 제공하지만 연간 대비 약 20% 비용이 추가됩니다. 엔터프라이즈는 2~3년 장기 계약 시 추가 할인이 적용됩니다.</p></div></div>
+        <div class="faq-item"><button class="faq-q"><span>카카오 알림톡 발송 비용은 어떻게 되나요?</span><div class="faq-icon">+</div></button><div class="faq-a"><p>TokBell 메시징 발송 비용은 건당 과금 방식입니다. Standard 이상 플랜에 TokBell이 포함되며, 발송 단가는 볼륨에 따라 책정됩니다. 정확한 단가는 영업팀에 문의해주세요.</p></div></div>
+        <div class="faq-item"><button class="faq-q"><span>무료 POC / 파일럿 테스트가 가능한가요?</span><div class="faq-icon">+</div></button><div class="faq-a"><p>네, Standard 이상 플랜은 30일 무료 파일럿을 제공합니다. 실제 데이터로 기능을 검증한 후 계약 여부를 결정하실 수 있습니다.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="color:white">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="3" fill="white"/>
+              </svg>
+            </div>
+            ThinkingBell
+          </div>
+          <p>Adobe 3종을 하나로. 비용은 1/3로.<br>아이뱅크 AX사업본부가 만드는<br>한국형 통합 마케팅 인프라 플랫폼.</p>
+          <div style="margin-top:20px">
+            <span class="partner-badge">Adobe 파트너</span>
+            <span class="partner-badge">Infobip</span>
+            <span class="partner-badge">NCP</span>
+            <span class="partner-badge">LG U+</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>제품</h4>
+          <ul class="footer-links">
+            <li><a href="product-analytics.html">Analytics</a></li>
+            <li><a href="product-campaign.html">Campaign</a></li>
+            <li><a href="product-tokbell.html">TokBell</a></li>
+            <li><a href="product-dataops.html">DataOps</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>솔루션</h4>
+          <ul class="footer-links">
+            <li><a href="solution-commerce.html">커머스/리테일</a></li>
+            <li><a href="solution-finance.html">금융/핀테크</a></li>
+            <li><a href="solution-travel.html">여행/라이프</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>리소스</h4>
+          <ul class="footer-links">
+            <li><a href="blog.html">블로그</a></li>
+            <li><a href="case-study.html">케이스 스터디</a></li>
+            <li><a href="docs.html">기술 문서</a></li>
+            <li><a href="webinar.html">웨비나</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>회사</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">아이뱅크 AX</a></li>
+            <li><a href="partners.html">파트너</a></li>
+            <li><a href="newsroom.html">뉴스룸</a></li>
+            <li><a href="contact.html">문의하기</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ibank AX. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">개인정보처리방침</a>
+          <a href="#">이용약관</a>
+          <a href="#">쿠키 설정</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+  <div class="cookie-banner" id="cookie-banner">
+    <span>이 사이트는 최적의 경험을 위해 쿠키를 사용합니다.
+      <a href="#">더 알아보기</a>
+    </span>
+    <button id="cookie-accept" class="btn btn-accent btn-sm" style="white-space:nowrap;flex-shrink:0">동의</button>
+  </div>
+
+  
+<script>
+  // Header scroll
+  const hdr = document.getElementById('site-header');
+  if (hdr) {
+    window.addEventListener('scroll', () => {
+      hdr.classList.toggle('solid', window.scrollY > 60);
+      hdr.classList.toggle('transparent', window.scrollY <= 60);
+    });
+  }
+  // Reveal on scroll
+  const revEls = document.querySelectorAll('.reveal');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  revEls.forEach(r => revObs.observe(r));
+
+  // Cookie banner
+  const cookieBtn = document.getElementById('cookie-accept');
+  if (cookieBtn) cookieBtn.addEventListener('click', () => {
+    document.getElementById('cookie-banner').style.display = 'none';
+    localStorage.setItem('cookie-accepted', '1');
+  });
+  if (localStorage.getItem('cookie-accepted')) {
+    const cb = document.getElementById('cookie-banner');
+    if (cb) cb.style.display = 'none';
+  }
+</script>
+
+  
+<script>
+  // Billing toggle
+  let annual = true;
+  document.getElementById('billing-toggle').addEventListener('click', function() {
+    annual = !annual;
+    this.classList.toggle('on', annual);
+    document.getElementById('lbl-year').style.color  = annual ? 'var(--brand-primary)' : '';
+    document.getElementById('lbl-month').style.color = annual ? '' : 'var(--brand-primary)';
+    document.getElementById('price-entry').textContent = annual ? '연 1,600만원' : '월 160만원';
+  });
+  // ROI Calc
+  function calcROI() {
+    const a = parseFloat(document.getElementById('roi-a').value) || 0;
+    const c = parseFloat(document.getElementById('roi-c').value) || 0;
+    const m = parseFloat(document.getElementById('roi-m').value) || 0;
+    const total = a + c + m;
+    const newCost = Math.max(16000000, total * 0.3);
+    const saving  = total - newCost;
+    const rate    = total > 0 ? Math.round((saving / total) * 100) : 0;
+    const fmt = n => n >= 100000000
+      ? `약 ${(n/100000000).toFixed(1)}억원`
+      : `약 ${Math.round(n/10000).toLocaleString()}만원`;
+    document.getElementById('roi-saving').textContent  = fmt(saving);
+    document.getElementById('roi-current').textContent = fmt(total);
+    document.getElementById('roi-new').textContent     = '~' + fmt(newCost);
+    document.getElementById('roi-rate').textContent    = '약 ' + rate + '%';
+  }
+  document.querySelectorAll('.roi-input').forEach(el => el.addEventListener('input', calcROI));
+  calcROI();
+  // FAQ
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.faq-item').classList.toggle('open'));
+  });
+</script>
+
+</body>
+</html>
